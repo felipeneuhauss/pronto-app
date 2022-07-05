@@ -13,11 +13,20 @@ function handleErrors (setErrors: (value: any) => void) {
   }
 }
 
-export const useAuth = ({ middleware, redirectIfAuthenticated }: { middleware?: string, redirectIfAuthenticated?: string } = {}) => {
+type UseAuthProps = { middleware?: string, redirectIfAuthenticated?: string };
+
+export const useAuth = ({
+  middleware,
+  redirectIfAuthenticated
+}: UseAuthProps = {}) => {
   const router = useRouter()
   const [, setToken] = useLocalStorage('token', '')
 
-  const { data: user, error, revalidate } = useSWR('/api/whoami', () =>
+  const {
+    data: user,
+    error,
+    revalidate
+  } = useSWR('/api/whoami', () =>
     axios
       .get('/api/whoami')
       .then(async (res) => {
@@ -36,7 +45,10 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: { middleware?: 
         router.push('/verify-email')
       })
   )
-  const register = async ({ setErrors, ...props }: {setErrors: (value: any) => void, name: string, email: string, password: string, passworConfirmation: string}) => {
+  const register = async ({
+    setErrors,
+    ...props
+  }: { setErrors: (value: any) => void, name: string, email: string, password: string, passworConfirmation: string }) => {
     setErrors([])
 
     axios
@@ -45,96 +57,119 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: { middleware?: 
       .catch(handleErrors(setErrors))
   }
 
-  type LoginProps = {
-      username: string,
-      password: string,
-      setErrors: Dispatch<SetStateAction<never[]>>;
-      setStatus: Dispatch<SetStateAction<null>>
-  };
+    type LoginProps = {
+        username: string,
+        password: string,
+        setErrors: Dispatch<SetStateAction<never[]>>;
+        setStatus: Dispatch<SetStateAction<null>>
+    };
 
-  const login = async ({ setErrors, setStatus, username, password }: LoginProps) => {
-    setErrors([])
-    setStatus(null)
-    axios
-      .post('/api/auth/token', {
-        username,
-        password,
-        device_name: 'app_backoffice'
-      })
-      .then(({ data }) => {
-        setToken(data)
-        revalidate()
-      })
-      .catch(e => {
-        if (e.response?.status !== 422) throw e
+    const login = async ({
+      setErrors,
+      setStatus,
+      username,
+      password
+    }: LoginProps) => {
+      setErrors([])
+      setStatus(null)
+      axios
+        .post('/api/auth/token', {
+          username,
+          password,
+          device_name: 'app_backoffice'
+        })
+        .then(({ data }) => {
+          setToken(data)
+          revalidate()
+        })
+        .catch(e => {
+          if (e.response?.status !== 422) throw e
+          if (e.response?.data?.errors) {
+            // @ts-ignore
+            setErrors(Object.values(e.response?.data?.errors).flat())
+          }
+        })
+    }
+    const forgotPassword = async ({
+      setErrors,
+      setStatus,
+      email
+    }: { setErrors: (value: any) => void, setStatus: (value: any) => void, email: string }) => {
+      setErrors([])
+      setStatus(null)
 
-        if (e.response?.data?.errors) {
-          // @ts-ignore
-          setErrors(Object.values(e.response?.data?.errors).flat())
-        }
-      })
-  }
-
-  const forgotPassword = async ({ setErrors, setStatus, email }: { setErrors: (value: any) => void, setStatus: (value: any) => void, email: string}) => {
-    setErrors([])
-    setStatus(null)
-
-    axios
-      .post('/forgot-password', { email, origin: window.location.origin })
-      .then(response => setStatus(response.data.status))
-      .catch(handleErrors(setErrors))
-  }
-
-  type ResetPasswordProps = {
-    setErrors: (value: any) => void;
-    setStatus: (value: any) => void;
-    email:string;
-    password:string;
-    passwordConfirmation:string;
-  };
-  const resetPassword = async ({ setErrors, setStatus, email, password, passwordConfirmation }: ResetPasswordProps) => {
-    setErrors([])
-    setStatus(null)
-
-    axios
-      .post('/reset-password', { token: router.query.token, email, password, password_confirmation: passwordConfirmation })
-      .then(response =>
-        router.push('/login?reset=' + Buffer.from(response.data.status, 'utf8').toString('base64'))
-      )
-      .catch(e => {
-        if (e.response && e.response?.status !== 422) throw error
-
-        setErrors(Object.values(e.response.data.errors).flat())
-      })
-  }
-
-  const resendEmailVerification = ({ setStatus }: { setStatus: (value: any) => void }) => {
-    axios
-      .post('/email/verification-notification')
-      .then(response => setStatus(response.data.status))
-  }
-
-  const logout = async () => {
-    if (!error) {
-      setToken(null)
-      revalidate()
+      axios
+        .post('/forgot-password', {
+          email,
+          origin: window.location.origin
+        })
+        .then(response => setStatus(response.data.status))
+        .catch(handleErrors(setErrors))
     }
 
-    window.location.pathname = '/login'
-  }
+    type ResetPasswordProps = {
+        setErrors: (value: any) => void;
+        setStatus: (value: any) => void;
+        email: string;
+        password: string;
+        passwordConfirmation: string;
+    };
+    const resetPassword = async ({
+      setErrors,
+      setStatus,
+      email,
+      password,
+      passwordConfirmation
+    }: ResetPasswordProps) => {
+      setErrors([])
+      setStatus(null)
 
-  useEffect(() => {
-    if (middleware === 'guest' && redirectIfAuthenticated && user) { router.push(redirectIfAuthenticated) }
-    if (middleware === 'auth' && error) logout()
-  }, [user, error])
+      axios
+        .post('/reset-password', {
+          token: router.query.token,
+          email,
+          password,
+          password_confirmation: passwordConfirmation
+        })
+        .then(response =>
+          router.push('/login?reset=' + Buffer.from(response.data.status, 'utf8').toString('base64'))
+        )
+        .catch(e => {
+          if (e.response && e.response?.status !== 422) throw error
 
-  return {
-    user,
-    register,
-    login,
-    forgotPassword,
-    resetPassword,
-    resendEmailVerification,
-    logout
-  }
+          setErrors(Object.values(e.response.data.errors).flat())
+        })
+    }
+
+    const resendEmailVerification = ({ setStatus }: { setStatus: (value: any) => void }) => {
+      axios
+        .post('/email/verification-notification')
+        .then(response => setStatus(response.data.status))
+    }
+
+    const logout = async () => {
+      if (!error) {
+        setToken(null)
+        revalidate()
+      }
+
+      window.location.pathname = '/login'
+    }
+
+    useEffect(() => {
+      if (middleware === 'guest' && redirectIfAuthenticated && user) {
+        router.push(redirectIfAuthenticated)
+      }
+      if (middleware === 'auth' && error) logout()
+    }, [user, error])
+
+    return {
+      user,
+      register,
+      login,
+      forgotPassword,
+      resetPassword,
+      resendEmailVerification,
+      logout
+    }
 }

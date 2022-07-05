@@ -1,41 +1,43 @@
-import AuthCard from 'components/AuthCard'
-import AuthSessionStatus from 'components/AuthSessionStatus'
-import AuthValidationErrors from 'components/AuthValidationErrors'
-import Button from 'components/Button'
-import GuestLayout from 'components/Layouts/GuestLayout'
-import Input from 'components/Input'
-import Label from 'components/Label'
-import Link from 'next/link'
-import { useAuth } from 'hooks/auth'
-import { useState } from 'react'
-import Image from 'next/image'
+import AuthCard from 'components/AuthCard';
+import AuthSessionStatus from 'components/AuthSessionStatus';
+import AuthValidationErrors from 'components/AuthValidationErrors';
+import Button from 'components/Button';
+import GuestLayout from 'components/Layouts/GuestLayout';
+import Input from 'components/Input';
+import Label from 'components/Label';
+import Link from 'next/link';
+import { useAuth } from 'hooks/auth';
+import { useState } from 'react';
+import Image from 'next/image';
 
 const ForgotPassword = () => {
-  const { forgotPassword } = useAuth({ middleware: 'guest' })
+  const { forgotPassword } = useAuth({ middleware: 'guest' });
 
-  const [email, setEmail] = useState('')
-  const [errors, setErrors] = useState([])
-  const [status, setStatus] = useState(null)
+  const [email, setEmail] = useState('');
+  const [errors, setErrors] = useState([]);
+  const [status, setStatus] = useState(null);
 
   const submitForm = (event: any) => {
-    event.preventDefault()
-    forgotPassword({ email, setErrors, setStatus })
-  }
+    event.preventDefault();
+    forgotPassword({ email, setErrors, setStatus });
+  };
 
   return (
     <GuestLayout>
       <AuthCard
-        logo={
+        logo={(
           <Link href="/">
             <a>
-              <Image src={'/logo.png'} width="300px" height="100px" />
+              <Image src="/logo.png" width="300px" height="100px" />
             </a>
           </Link>
-        }>
+        )}
+      >
 
         <div className="mb-4 text-sm text-gray-600">
-            Você esqueceu sua senha? Não tem problema. Apenas deixe-nos saber seu e-mail de acesso que enviaremos
-            um link para você redefinir sua senha.
+          Você esqueceu sua senha? Não tem problema.
+          Apenas deixe-nos saber seu e-mail de acesso que enviaremos
+          um link para você redefinir sua senha.
         </div>
 
         {/* Session Status */}
@@ -63,7 +65,7 @@ const ForgotPassword = () => {
           <div className="flex items-center justify-between mt-4 gap-2">
             <Link href="/login">
               <a className="underline text-sm text-gray-600 hover:text-gray-900">
-                      Voltar para o login
+                Voltar para o login
               </a>
             </Link>
             <Button>Enviar e-mail de recuperação</Button>
@@ -71,7 +73,7 @@ const ForgotPassword = () => {
         </form>
       </AuthCard>
     </GuestLayout>
-  )
-}
+  );
+};
 
-export default ForgotPassword
+export default ForgotPassword;

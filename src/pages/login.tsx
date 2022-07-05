@@ -1,54 +1,57 @@
-import AuthCard from 'components/AuthCard'
-import AuthSessionStatus from 'components/AuthSessionStatus'
-import AuthValidationErrors from 'components/AuthValidationErrors'
-import Button from 'components/Button'
-import GuestLayout from 'components/Layouts/GuestLayout'
-import Input from 'components/Input'
-import Label from 'components/Label'
-import Link from 'next/link'
-import Image from 'next/image'
-import { useAuth } from 'hooks/auth'
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+import AuthCard from 'components/AuthCard';
+import AuthSessionStatus from 'components/AuthSessionStatus';
+import AuthValidationErrors from 'components/AuthValidationErrors';
+import Button from 'components/Button';
+import GuestLayout from 'components/Layouts/GuestLayout';
+import Input from 'components/Input';
+import Label from 'components/Label';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useAuth } from 'hooks/auth';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 const Login = () => {
-  const router = useRouter()
+  const router = useRouter();
   const { login } = useAuth({
     middleware: 'guest',
-    redirectIfAuthenticated: '/admin/dashboard'
-  })
+    redirectIfAuthenticated: '/admin/dashboard',
+  });
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [errors, setErrors] = useState([])
-  const [status, setStatus] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState([]);
+  const [status, setStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (router.query && router.query.reset && router.query.reset?.length > 0 && errors.length === 0) {
+    if (router.query
+      && router.query.reset
+      && router.query.reset?.length > 0 && errors.length === 0) {
       // @ts-ignore
-      setStatus(atob(router.query.reset))
+      setStatus(atob(router.query.reset));
     } else {
-      setStatus(null)
+      setStatus(null);
     }
-  })
+  });
 
   const submitForm = async (event: any) => {
-    event.preventDefault()
-    setLoading(true)
-    login({ username, password, setErrors, setStatus })
-  }
+    event.preventDefault();
+    setLoading(true);
+    login({
+      username, password, setErrors, setStatus,
+    });
+  };
 
   return (
     <GuestLayout>
       <AuthCard
-        logo={
+        logo={(
           <Link href="/">
-            <a>
-              <Image src={'/logo.png'} width="300px" height="100px" />
-            </a>
+            <Image src="/logo.png" width="300px" height="100px" />
           </Link>
-        }>
+        )}
+      >
         {/* Session Status */}
         <AuthSessionStatus className="mb-4" status={status} />
 
@@ -98,7 +101,7 @@ const Login = () => {
         </form>
       </AuthCard>
     </GuestLayout>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export type Option = {
     value: any;
@@ -15,9 +15,12 @@ type SelectProps = {
     options: Option[];
 }
 
-const Select = ({ label, placeholder, name, register, required, disabled, options }: SelectProps) => {
-  const selectOptions = [{ value: '', label: 'Selecione...' }, ...options]
+const Select = ({
+  label, placeholder, name, register, required, disabled, options,
+}: SelectProps) => {
+  const selectOptions = [{ value: '', label: 'Selecione...' }, ...options];
   return (
+    // eslint-disable-next-line jsx-a11y/label-has-associated-control
     <label htmlFor="">
       {label && (<span className="text-gray-700">{label}</span>)}
       <select
@@ -33,12 +36,12 @@ const Select = ({ label, placeholder, name, register, required, disabled, option
                     border-gray-300
                     shadow-sm
                     focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-                  ">
-        {!!selectOptions.length && selectOptions?.map((item: Option, key) => {
-          return <option value={item.value} key={`${key}`}>{item.label}</option>
-        })}
+                  "
+      >
+        {!!selectOptions.length && selectOptions?.map((item: Option, key) => <option value={item.value} key={`${key}`}>{item.label}</option>)}
       </select>
-    </label>)
-}
+    </label>
+  );
+};
 
-export default Select
+export default Select;

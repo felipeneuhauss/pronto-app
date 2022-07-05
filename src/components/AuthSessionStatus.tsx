@@ -1,13 +1,15 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 const AuthSessionStatus = ({ status, className, ...props }:any) => (
   <>
     {status && (
       <div
         className={`${className} font-medium text-sm text-green-600`}
-        {...props}>
+        {...props}
+      >
         {status}
       </div>
     )}
   </>
-)
+);
 
-export default AuthSessionStatus
+export default AuthSessionStatus;

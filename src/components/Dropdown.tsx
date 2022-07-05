@@ -1,32 +1,33 @@
-import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
+import { Fragment } from 'react';
+import { Menu, Transition } from '@headlessui/react';
 
 const Dropdown = ({
   align = 'right',
   width = 48,
   contentClasses = 'py-1 bg-white',
   trigger,
-  children
+  children,
 }: any) => {
-  let alignmentClasses = 'origin-top-right right-0'
+  let alignmentClasses = 'origin-top-right right-0';
 
+  // eslint-disable-next-line default-case
   switch (width) {
-  case '48':
-    width = 'w-48'
-    break
+    case '48':
+      width = 'w-48';
+      break;
   }
 
   switch (align) {
-  case 'left':
-    alignmentClasses = 'origin-top-left left-0'
-    break
-  case 'top':
-    alignmentClasses = 'origin-top'
-    break
-  case 'right':
-  default:
-    alignmentClasses = 'origin-top-right right-0'
-    break
+    case 'left':
+      alignmentClasses = 'origin-top-left left-0';
+      break;
+    case 'top':
+      alignmentClasses = 'origin-top';
+      break;
+    case 'right':
+    default:
+      alignmentClasses = 'origin-top-right right-0';
+      break;
   }
 
   return (
@@ -53,7 +54,7 @@ const Dropdown = ({
         </>
       )}
     </Menu>
-  )
-}
+  );
+};
 
-export default Dropdown
+export default Dropdown;

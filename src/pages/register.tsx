@@ -1,43 +1,44 @@
-import ApplicationLogo from 'components/ApplicationLogo'
-import AuthCard from 'components/AuthCard'
-import AuthValidationErrors from 'components/AuthValidationErrors'
-import Button from 'components/Button'
-import GuestLayout from 'components/Layouts/GuestLayout'
-import Input from 'components/Input'
-import Label from 'components/Label'
-import Link from 'next/link'
-import { useAuth } from 'hooks/auth'
-import { useState } from 'react'
+import AuthCard from 'components/AuthCard';
+import AuthValidationErrors from 'components/AuthValidationErrors';
+import Button from 'components/Button';
+import Input from 'components/Input';
+import Label from 'components/Label';
+import GuestLayout from 'components/Layouts/GuestLayout';
+import { useAuth } from 'hooks/auth';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
 
 const Register = () => {
   const { register } = useAuth({
     middleware: 'guest',
-    redirectIfAuthenticated: '/admin/dashboard'
-  })
+    redirectIfAuthenticated: '/admin/dashboard',
+  });
 
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [passwordConfirmation, setPasswordConfirmation] = useState('')
-  const [errors, setErrors] = useState([])
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [errors, setErrors] = useState([]);
 
   const submitForm = (event: any) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    register({ name, email, password, passworConfirmation: passwordConfirmation, setErrors })
-  }
+    register({
+      name, email, password, passworConfirmation: passwordConfirmation, setErrors,
+    });
+  };
 
   // @ts-ignore
   return (
     <GuestLayout>
       <AuthCard
-        logo={
+        logo={(
           <Link href="/">
-            <a>
-              <ApplicationLogo className="w-20 h-20 fill-current text-gray-500" />
-            </a>
+            <Image src="/logo.png" width="300px" height="100px" />
           </Link>
-        }>
+        )}
+      >
         {/* Validation Errors */}
         <AuthValidationErrors className="mb-4" errors={errors} />
 
@@ -87,7 +88,7 @@ const Register = () => {
           {/* Confirm Password */}
           <div className="mt-4">
             <Label htmlFor="passwordConfirmation">
-                            Confirm Password
+              Confirm Password
             </Label>
 
             <Input
@@ -95,9 +96,7 @@ const Register = () => {
               type="password"
               value={passwordConfirmation}
               className="block mt-1 w-full"
-              onChange={(event: any) =>
-                setPasswordConfirmation(event.target.value)
-              }
+              onChange={(event: any) => setPasswordConfirmation(event.target.value)}
               required
             />
           </div>
@@ -105,7 +104,7 @@ const Register = () => {
           <div className="flex items-center justify-end mt-4">
             <Link href="/login">
               <a className="underline text-sm text-gray-600 hover:text-gray-900">
-                                Already registered?
+                Already registered?
               </a>
             </Link>
 
@@ -114,7 +113,7 @@ const Register = () => {
         </form>
       </AuthCard>
     </GuestLayout>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

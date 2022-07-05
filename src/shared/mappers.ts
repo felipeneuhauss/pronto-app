@@ -138,9 +138,9 @@ export interface ActivitySectorEntity {
 }
 
 export interface TariffMapped {
-    id:string
-    name:string
-    createdAt:string
+    id: string
+    name: string
+    createdAt: string
     updatedAt: string
 }
 
@@ -208,10 +208,10 @@ export type ContactMapped = {
 };
 
 export type SupplierEntity = {
-    id :string;
-    name :string;
-    document? :string;
-    website? :string;
+    id: string;
+    name: string;
+    document?: string;
+    website?: string;
     contacts: ContactEntity[];
     address?: AddressEntity;
     address_id: string;
@@ -246,11 +246,43 @@ export interface SaleEntity {
     visits: VisitEntity[];
 }
 
+export interface ProcedureEntity {
+    id: string;
+    tuss_remuneration_name: string;
+    provider_name: string;
+    provider_social_name: string;
+    provider_cnpj: string;
+    address_street: string | null;
+    street_number: string | null;
+    zip_code: string | null;
+    complementary: string | null;
+    city: string | null;
+    state: string | null;
+    initials: string | null;
+    total: string | null;
+}
+
+export interface ProcedureMapped {
+    id: string;
+    tussRemunerationName: string;
+    providerName: string;
+    providerSocialName: string;
+    providerCnpj: string;
+    addressStreet: string | null;
+    streetNumber: string | null;
+    zipCode: string | null;
+    complementary: string | null;
+    city: string | null;
+    state: string | null;
+    initials: string | null;
+    total: string | null;
+}
+
 export type SupplierMapped = {
-    id :string;
-    name :string;
-    document? :string;
-    website? :string;
+    id: string;
+    name: string;
+    document?: string;
+    website?: string;
     contacts: ContactMapped[];
     address: AddressMapped;
     createdAt: string;
@@ -291,20 +323,81 @@ export type RoleMapped = {
     updatedAt?: string;
 };
 
-export type UserEntity = {
-    created_at: string;
-    email: string;
-    email_verified_at: string;
-    name: string;
-    roles: RoleEntity[];
-    updated_at?: string;
-    id: number | string;
+export interface PersonalDetailEntity {
+    id: string
+    name: string
+    birthday: string
+    cpf: string
+    rg: string
+    ssp: any
+    email: string
+    address: string
+    zip_code: string
+    neighborhood: string
+    complement: any
+    number: string
+    lat: string
+    lng: string
+    city_id: number
+    city: CityOption
+    phone_number: string
+    mobile_number: string
+    business_number: string
+    website: string
+    nationality: string
+    naturalness: string
+    profession: string
+    civil_state: string
+    civilState: CivilStateOption
+    gender: GenderOption
+    type: string
+    created_at: string
+}
+
+export interface CityOption {
+    label: string
+    value: number
+}
+
+export interface CivilStateOption {
+    value: string
+    label: string
+}
+
+export interface GenderOption {
+    label: string
+    value: string
+}
+
+export interface UserEntity {
+    id: string
+    name: string
+    email: string
+    lgpd_verified: boolean
+    email_verified: boolean
+    phone_number: string
+    phone_number_verified: boolean
+    created_at: string
+    updated_at: string
+    is_admin: boolean
+    is_seller: boolean
+    is_contractor: boolean
+    is_beneficiary: boolean
+    is_supplier: boolean
+    is_nurse: boolean
+    is_specialist: boolean
+    is_urgency: boolean
+    roles: RoleEntity[]
+    register_mail_sent_at: any
+    personalDetail: PersonalDetailEntity
 }
 
 export type UserMapped = {
     createdAt: string;
     email: string;
-    emailVerifiedAt: string;
+    phoneNumber: string;
+    lgpdVerified: boolean;
+    emailVerified: boolean;
     name: string;
     id: string | number;
     roles: RoleMapped[];
@@ -323,6 +416,72 @@ export type SellerEntity = {
     updated_at?: string;
     user: UserEntity;
     user_id: string;
+};
+
+export type ProviderEntity = {
+    id: string;
+    contract_attachment_id: any;
+    social_name: string;
+    fantasy_name: string;
+    cnpj: string;
+    cnes: string;
+    state_number: string;
+    address_id: any;
+    assigned_at: string;
+    started_at: string;
+    responsible_name: string;
+    financial_email: any;
+    financial_phone: string;
+    commercial_email: string;
+    commercial_phone: string;
+    contract_type: string;
+    bank_id: any;
+    bank_account: string;
+    bank_agency: string;
+    user_id: any;
+    created_at: string;
+    updated_at: string;
+    deleted_at: any;
+    observations: any;
+    attachments: any[];
+    contractAttachment: any;
+    address: any;
+    bank: any;
+    serviceTypes: any[];
+    assistanceTypes: any[];
+};
+
+export type ProviderMapped = {
+    id: string;
+    contractAttachmentId: any;
+    socialName: string;
+    fantasyName: string;
+    cnpj: string;
+    cnes: string;
+    stateNumber: string;
+    addressId: any;
+    assignedAt: string;
+    startedAt: string;
+    responsibleName: string;
+    financialEmail: any;
+    financialPhone: string;
+    commercialEmail: string;
+    commercialPhone: string;
+    contractType: string;
+    bankId: any;
+    bankAccount: string;
+    bankAgency: string;
+    userId: any;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: any;
+    observations: any;
+    attachments: any[];
+    contractAttachment: any;
+    address: any;
+    bank: any;
+    serviceTypes: any[];
+    assistanceTypes: any[];
 };
 
 export type SellerMapped = {
@@ -396,12 +555,53 @@ export const userMapper = (user: UserEntity): UserMapped | undefined => {
   return {
     createdAt: formatDateTime(user.created_at),
     email: user.email,
-    emailVerifiedAt: formatDateTime(user.email_verified_at),
+    emailVerified: user.email_verified,
     name: user.name,
+    phoneNumber: user.phone_number,
+    lgpdVerified: user.lgpd_verified,
     id: user.id,
     roles: rolesMapper(user.roles),
     updatedAt: formatDateTime(user.updated_at)
   } as UserMapped
+}
+
+export const providerMapper = (provider: ProviderEntity): ProviderMapped | undefined => {
+  if (!provider) {
+    return undefined
+  }
+
+  return {
+    id: provider.id,
+    contractAttachmentId: provider.contract_attachment_id,
+    socialName: provider.social_name,
+    fantasyName: provider.fantasy_name,
+    cnpj: provider.cnpj,
+    cnes: provider.cnes,
+    stateNumber: provider.state_number,
+    addressId: provider.address_id,
+    assignedAt: provider.assigned_at,
+    startedAt: provider.started_at,
+    responsibleName: provider.responsible_name,
+    financialEmail: provider.financial_email,
+    financialPhone: provider.financial_phone,
+    commercialEmail: provider.commercial_email,
+    commercialPhone: provider.commercial_phone,
+    contractType: provider.contract_type,
+    bankId: provider.bank_id,
+    bankAccount: provider.bank_account,
+    bankAgency: provider.bank_agency,
+    userId: provider.user_id,
+    createdAt: provider.created_at,
+    updatedAt: provider.updated_at,
+    deletedAt: provider.deleted_at,
+    observations: provider.observations,
+    attachments: provider.attachments,
+    contractAttachment: provider.contractAttachment,
+    address: provider.address,
+    bank: provider.bank,
+    serviceTypes: provider.serviceTypes,
+    assistanceTypes: provider.assistanceTypes
+  } as ProviderMapped
 }
 
 export const visitMapper = (visit: VisitEntity): VisitMapped | undefined => {
@@ -524,6 +724,28 @@ export const customerMapper = (customer?: CustomerEntity): CustomerMapped | unde
     updatedAt: formatDateTime(customer.updated_at),
     deletedAt: formatDateTime(customer.deleted_at)
   } as CustomerMapped
+}
+
+export const procedureMapper = (procedure?: ProcedureEntity): ProcedureMapped | undefined => {
+  if (!procedure) {
+    return undefined
+  }
+
+  return {
+    id: procedure.id,
+    tussRemunerationName: procedure.tuss_remuneration_name,
+    providerName: procedure.provider_name,
+    providerSocialName: procedure.provider_social_name,
+    providerCnpj: procedure.provider_cnpj,
+    addressStreet: procedure.address_street,
+    streetNumber: procedure.street_number,
+    zipCode: procedure.zip_code,
+    complementary: procedure.complementary,
+    city: procedure.city,
+    state: procedure.state,
+    initials: procedure.initials,
+    total: procedure.total
+  } as ProcedureMapped
 }
 
 export const customerBranchesMapper = (customerBranches?: CustomerBranchEntity[]): CustomerBranchMapped[] | [] => {

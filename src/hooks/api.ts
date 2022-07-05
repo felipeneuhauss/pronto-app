@@ -1,9 +1,9 @@
 import axios from 'lib/axios'
 
 interface PostProps<T> {
-    payload: Partial<T>;
+    payload?: Partial<T> | null;
     path: string;
-    setErrors: (value: any) => void;
+    setErrors: (value: any) => void | null;
 }
 
 export const useApi = () => {

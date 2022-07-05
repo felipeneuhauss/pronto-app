@@ -6,6 +6,6 @@ const AuthCard = ({ logo, children }: any) => (
       {children}
     </div>
   </div>
-)
+);
 
-export default AuthCard
+export default AuthCard;

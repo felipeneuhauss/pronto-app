@@ -44,6 +44,12 @@
         "import/no-unresolved": "off",
         "@typescript-eslint/no-unused-vars": ["error"],
         "react/jsx-props-no-spreading": "off",
-        "react/function-component-definition": "off"
+        "react/function-component-definition": "off",
+        "react/no-array-index-key": "off",
+        "no-param-reassign": "off",
+        "react/require-default-props": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "consistent-return": "off"
     }
 }

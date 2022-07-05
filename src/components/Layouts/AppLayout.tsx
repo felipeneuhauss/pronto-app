@@ -1,11 +1,11 @@
-import Navigation from 'components/Layouts/Navigation'
-import { useAuth } from 'hooks/auth'
+import Navigation from 'components/Layouts/Navigation';
+import { useAuth } from 'hooks/auth';
 
-import 'react-toastify/dist/ReactToastify.css'
-import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const AppLayout = ({ header, children }: any) => {
-  const { user } = useAuth({ middleware: 'auth' })
+  const { user } = useAuth({ middleware: 'auth' });
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -22,7 +22,7 @@ const AppLayout = ({ header, children }: any) => {
       <main>{children}</main>
       <ToastContainer />
     </div>
-  )
-}
+  );
+};
 
-export default AppLayout
+export default AppLayout;

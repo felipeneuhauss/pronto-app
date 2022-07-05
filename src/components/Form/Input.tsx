@@ -1,5 +1,7 @@
-import React, { useCallback } from 'react'
-import { currency, CURRENCY, POSTAL_CODE, postalCode } from 'lib/masks'
+import React, { useCallback } from 'react';
+import {
+  currency, CURRENCY, POSTAL_CODE, postalCode,
+} from 'lib/masks';
 
 type InputTextProps = {
     type?: 'text' | 'email' | 'tel' | 'url' | 'hidden';
@@ -15,20 +17,23 @@ type InputTextProps = {
     value?: string | null;
 }
 
-const Input = ({ label, placeholder, name, register, required, mask, disabled, type = 'text', handleBlur, value }: InputTextProps) => {
+const Input = ({
+  label, placeholder, name, register, required, mask, disabled, type = 'text', handleBlur, value,
+}: InputTextProps) => {
   const handleKeyUp = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
       if (mask === POSTAL_CODE) {
-        postalCode(e)
+        postalCode(e);
       }
       if (mask === CURRENCY) {
-        currency(e)
+        currency(e);
       }
     },
-    [mask]
-  )
+    [mask],
+  );
 
   return (
+    // eslint-disable-next-line jsx-a11y/label-has-associated-control
     <label htmlFor="">
       {label && type !== 'hidden' && (<span className="text-gray-700">{label}</span>)}
       <input
@@ -50,7 +55,8 @@ const Input = ({ label, placeholder, name, register, required, mask, disabled, t
                       shadow-sm
                       focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
       />
-    </label>)
-}
+    </label>
+  );
+};
 
-export default Input
+export default Input;

@@ -1,21 +1,21 @@
-import ApplicationLogo from 'components/ApplicationLogo'
-import Dropdown from 'components/Dropdown'
-import Link from 'next/link'
-import NavLink from 'components/NavLink'
-import ResponsiveNavLink, { ResponsiveNavButton } from 'components/ResponsiveNavLink'
-import { DropdownButton } from 'components/DropdownLink'
-import { useAuth } from 'hooks/auth'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
-import { ADMIN, getProfile, isCommercialAssistant } from 'lib/profile'
+import Dropdown from 'components/Dropdown';
+import { DropdownButton } from 'components/DropdownLink';
+import NavLink from 'components/NavLink';
+import ResponsiveNavLink, { ResponsiveNavButton } from 'components/ResponsiveNavLink';
+import { useAuth } from 'hooks/auth';
+import { ADMIN, getProfile } from 'lib/profile';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 const Navigation = ({ user }: any) => {
-  const router = useRouter()
-  const profile = getProfile(user)
+  const router = useRouter();
+  const profile = getProfile(user);
 
-  const { logout } = useAuth()
+  const { logout } = useAuth();
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   return (
     <nav className="bg-white border-b border-gray-100">
@@ -26,9 +26,7 @@ const Navigation = ({ user }: any) => {
             {/* Logo */}
             <div className="flex-shrink-0 flex items-center">
               <Link href="/admin/dashboard">
-                <a>
-                  <ApplicationLogo className="block h-10 w-auto fill-current text-gray-600" />
-                </a>
+                <Image src="/logo.png" width="75px" height="25px" />
               </Link>
             </div>
 
@@ -36,23 +34,23 @@ const Navigation = ({ user }: any) => {
             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
               <NavLink
                 href="/admin/dashboard"
-                active={router.pathname === '/admin/dashboard'}>
-                                Dashboard
+                active={router.pathname === '/admin/dashboard'}
+              >
+                Dashboard
               </NavLink>
-              {profile === ADMIN && <NavLink
-                href="/admin/sellers"
-                active={router.pathname === '/admin/sellers'}>
-                                Utilizadores
-              </NavLink>}
-              {(profile === ADMIN || isCommercialAssistant(user)) && <NavLink
-                href="/admin/suppliers"
-                active={router.pathname === '/admin/suppliers'}>
-                                Representadas
-              </NavLink>}
+              {profile === ADMIN && (
               <NavLink
-                href="/admin/customers"
-                active={router.pathname === '/admin/customers'}>
-                                Clientes
+                href="/admin/users"
+                active={router.pathname === '/admin/users'}
+              >
+                Usuários
+              </NavLink>
+              )}
+              <NavLink
+                href="/admin/procedures"
+                active={router.pathname === '/admin/customers'}
+              >
+                Prestadores
               </NavLink>
             </div>
           </div>
@@ -62,15 +60,19 @@ const Navigation = ({ user }: any) => {
             <Dropdown
               align="right"
               width="48"
-              trigger={
-                <button className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none transition duration-150 ease-in-out">
+              trigger={(
+                <button
+                  type="button"
+                  className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none transition duration-150 ease-in-out"
+                >
                   <div>{user?.name}</div>
 
                   <div className="ml-1">
                     <svg
                       className="fill-current h-4 w-4"
                       xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20">
+                      viewBox="0 0 20 20"
+                    >
                       <path
                         fillRule="evenodd"
                         d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -79,10 +81,11 @@ const Navigation = ({ user }: any) => {
                     </svg>
                   </div>
                 </button>
-              }>
+              )}
+            >
               {/* Authentication */}
               <DropdownButton onClick={logout}>
-                                Logout
+                Logout
               </DropdownButton>
             </Dropdown>
           </div>
@@ -90,13 +93,18 @@ const Navigation = ({ user }: any) => {
           {/* Hamburger */}
           <div className="-mr-2 flex items-center sm:hidden">
             <button
-              onClick={() => setOpen(isOpened => !isOpened)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+              type="button"
+              onClick={() => setOpen((isOpened) => !isOpened)}
+              className="inline-flex items-center justify-center p-2
+              rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none
+              focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+            >
               <svg
                 className="h-6 w-6"
                 stroke="currentColor"
                 fill="none"
-                viewBox="0 0 24 24">
+                viewBox="0 0 24 24"
+              >
                 {open
                   ? (
                     <path
@@ -128,23 +136,15 @@ const Navigation = ({ user }: any) => {
           <div className="pt-2 pb-3 space-y-1">
             <ResponsiveNavLink
               href="/admin/dashboard"
-              active={router.pathname === '/admin/dashboard'}>
-                            Dashboard
+              active={router.pathname === '/admin/dashboard'}
+            >
+              Dashboard
             </ResponsiveNavLink>
             <ResponsiveNavLink
               href="/admin/sellers"
-              active={router.pathname === '/admin/sellers'}>
-                            Utilizadores
-            </ResponsiveNavLink>
-            <ResponsiveNavLink
-              href="/admin/suppliers"
-              active={router.pathname === '/admin/suppliers'}>
-                            Representadas
-            </ResponsiveNavLink>
-            <ResponsiveNavLink
-              href="/admin/customers"
-              active={router.pathname === '/admin/customers'}>
-                            Clientes
+              active={router.pathname === '/admin/sellers'}
+            >
+              Utilizadores
             </ResponsiveNavLink>
           </div>
 
@@ -157,7 +157,8 @@ const Navigation = ({ user }: any) => {
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke="currentColor">
+                  stroke="currentColor"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -180,14 +181,14 @@ const Navigation = ({ user }: any) => {
             <div className="mt-3 space-y-1">
               {/* Authentication */}
               <ResponsiveNavButton onClick={logout}>
-                                Logout
+                Logout
               </ResponsiveNavButton>
             </div>
           </div>
         </div>
       )}
     </nav>
-  )
-}
+  );
+};
 
-export default Navigation
+export default Navigation;
