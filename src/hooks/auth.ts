@@ -1,61 +1,59 @@
-import useSWR from 'swr'
-import axios from 'lib/axios'
-import { Dispatch, SetStateAction, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { useLocalStorage } from 'hooks/local-storage'
-import { isCommercialAssistant, isSeller } from 'lib/profile'
+import useSWR from 'swr';
+import axios from 'lib/axios';
+import { Dispatch, SetStateAction, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useLocalStorage } from 'hooks/local-storage';
+import { isCommercialAssistant, isSeller } from 'lib/profile';
 
-function handleErrors (setErrors: (value: any) => void) {
+function handleErrors(setErrors: (value: any) => void) {
   return (e: any) => {
-    if (e.response.status !== 422) throw e
+    if (e.response.status !== 422) throw e;
 
-    setErrors(Object.values(e.response.data.errors).flat())
-  }
+    setErrors(Object.values(e.response.data.errors).flat());
+  };
 }
 
 type UseAuthProps = { middleware?: string, redirectIfAuthenticated?: string };
 
 export const useAuth = ({
   middleware,
-  redirectIfAuthenticated
+  redirectIfAuthenticated,
 }: UseAuthProps = {}) => {
-  const router = useRouter()
-  const [, setToken] = useLocalStorage('token', '')
+  const router = useRouter();
+  const [, setToken] = useLocalStorage('token', '');
 
   const {
     data: user,
     error,
-    revalidate
-  } = useSWR('/api/whoami', () =>
-    axios
-      .get('/api/whoami')
-      .then(async (res) => {
-        const { data: userLoaded } = res.data
-        if (isSeller(userLoaded) && ['/admin/sellers', '/admin/suppliers'].includes(router.pathname)) {
-          await router.push('/404')
-        }
-        if (isCommercialAssistant(userLoaded) && ['/admin/sellers'].includes(router.pathname)) {
-          await router.push('/404')
-        }
-        return userLoaded
-      })
-      .catch(e => {
-        if (e.response.status !== 409) throw e
+    revalidate,
+  } = useSWR('/api/whoami', () => axios
+    .get('/api/whoami')
+    .then(async (res) => {
+      const { data: userLoaded } = res.data;
+      if (isSeller(userLoaded) && ['/admin/sellers', '/admin/suppliers'].includes(router.pathname)) {
+        await router.push('/404');
+      }
+      if (isCommercialAssistant(userLoaded) && ['/admin/sellers'].includes(router.pathname)) {
+        await router.push('/404');
+      }
+      return userLoaded;
+    })
+    .catch((e) => {
+      if (e.response.status !== 409) throw e;
 
-        router.push('/verify-email')
-      })
-  )
+      router.push('/verify-email');
+    }));
   const register = async ({
     setErrors,
     ...props
   }: { setErrors: (value: any) => void, name: string, email: string, password: string, passworConfirmation: string }) => {
-    setErrors([])
+    setErrors([]);
 
     axios
       .post('/register', props)
       .then(() => (window.location.pathname = '/login'))
-      .catch(handleErrors(setErrors))
-  }
+      .catch(handleErrors(setErrors));
+  };
 
     type LoginProps = {
         username: string,
@@ -68,44 +66,44 @@ export const useAuth = ({
       setErrors,
       setStatus,
       username,
-      password
+      password,
     }: LoginProps) => {
-      setErrors([])
-      setStatus(null)
+      setErrors([]);
+      setStatus(null);
       axios
         .post('/api/auth/token', {
           username,
           password,
-          device_name: 'app_backoffice'
+          device_name: 'app_backoffice',
         })
         .then(({ data }) => {
-          setToken(data)
-          revalidate()
+          setToken(data);
+          revalidate();
         })
-        .catch(e => {
-          if (e.response?.status !== 422) throw e
+        .catch((e) => {
+          if (e.response?.status !== 422) throw e;
           if (e.response?.data?.errors) {
             // @ts-ignore
-            setErrors(Object.values(e.response?.data?.errors).flat())
+            setErrors(Object.values(e.response?.data?.errors).flat());
           }
-        })
-    }
+        });
+    };
     const forgotPassword = async ({
       setErrors,
       setStatus,
-      email
+      email,
     }: { setErrors: (value: any) => void, setStatus: (value: any) => void, email: string }) => {
-      setErrors([])
-      setStatus(null)
+      setErrors([]);
+      setStatus(null);
 
       axios
-        .post('/forgot-password', {
+        .post('/api/password/email', {
           email,
-          origin: window.location.origin
+          origin: window.location.origin,
         })
-        .then(response => setStatus(response.data.status))
-        .catch(handleErrors(setErrors))
-    }
+        .then((response) => setStatus(response.data.status))
+        .catch(handleErrors(setErrors));
+    };
 
     type ResetPasswordProps = {
         setErrors: (value: any) => void;
@@ -119,49 +117,47 @@ export const useAuth = ({
       setStatus,
       email,
       password,
-      passwordConfirmation
+      passwordConfirmation,
     }: ResetPasswordProps) => {
-      setErrors([])
-      setStatus(null)
+      setErrors([]);
+      setStatus(null);
 
       axios
         .post('/reset-password', {
           token: router.query.token,
           email,
           password,
-          password_confirmation: passwordConfirmation
+          password_confirmation: passwordConfirmation,
         })
-        .then(response =>
-          router.push('/login?reset=' + Buffer.from(response.data.status, 'utf8').toString('base64'))
-        )
-        .catch(e => {
-          if (e.response && e.response?.status !== 422) throw error
+        .then((response) => router.push(`/login?reset=${Buffer.from(response.data.status, 'utf8').toString('base64')}`))
+        .catch((e) => {
+          if (e.response && e.response?.status !== 422) throw error;
 
-          setErrors(Object.values(e.response.data.errors).flat())
-        })
-    }
+          setErrors(Object.values(e.response.data.errors).flat());
+        });
+    };
 
     const resendEmailVerification = ({ setStatus }: { setStatus: (value: any) => void }) => {
       axios
         .post('/email/verification-notification')
-        .then(response => setStatus(response.data.status))
-    }
+        .then((response) => setStatus(response.data.status));
+    };
 
     const logout = async () => {
       if (!error) {
-        setToken(null)
-        revalidate()
+        setToken(null);
+        revalidate();
       }
 
-      window.location.pathname = '/login'
-    }
+      window.location.pathname = '/login';
+    };
 
     useEffect(() => {
       if (middleware === 'guest' && redirectIfAuthenticated && user) {
-        router.push(redirectIfAuthenticated)
+        router.push(redirectIfAuthenticated);
       }
-      if (middleware === 'auth' && error) logout()
-    }, [user, error])
+      if (middleware === 'auth' && error) logout();
+    }, [user, error]);
 
     return {
       user,
@@ -170,6 +166,6 @@ export const useAuth = ({
       forgotPassword,
       resetPassword,
       resendEmailVerification,
-      logout
-    }
-}
+      logout,
+    };
+};
