@@ -15,7 +15,7 @@ const ProcedureSearchForm = ({ handleSearch }: { handleSearch: any }) => {
   });
   const [providers, setProviders] = useState<Option[]>([]);
   useEffect(() => {
-    get('/providers')
+    get('/providers/pairs')
       .then((data: ProviderEntity[]) => {
         setProviders(data.map((provider: ProviderEntity) => ({
           label: provider.fantasy_name,
