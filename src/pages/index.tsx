@@ -71,9 +71,8 @@ export default function Home() {
 
         <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
           <div className="flex justify-center pt-8 sm:justify-start sm:pt-0">
-            <img src="/images/logo.jpeg" alt="Logo ProntoSaude" />
+            <img src="/images/logo.png" alt="Logo ProntoSaude" />
           </div>
-
         </div>
       </div>
     </>
