@@ -16,7 +16,7 @@ const BeneficiarySearchForm = ({ handleSearch }: { handleSearch: any }) => {
   const [contracts, setContracts] = useState<Option[]>([]);
   const [contractors, setContractors] = useState<Option[]>([]);
   useEffect(() => {
-    get('/contracts')
+    get('/contracts/pairs')
       .then((data: ContractEntity[]) => {
         setContracts(data.map((contract: ContractEntity) => ({
           label: contract.name,
@@ -26,7 +26,7 @@ const BeneficiarySearchForm = ({ handleSearch }: { handleSearch: any }) => {
       .catch((error: any) => {
         if (error.response.status !== 409) throw error;
       });
-    get('/contractors')
+    get('/contractors/pairs')
       .then((data: ContractorEntity[]) => {
         setContractors(data.map((contractor: ContractorEntity) => ({
           label: contractor.social_name || contractor.personalDetail.name,
