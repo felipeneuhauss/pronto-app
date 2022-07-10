@@ -23,6 +23,7 @@ export const getProfile = (user: UserEntity): Role => {
 // eslint-disable-next-line max-len
 export const isSeller = (user: UserEntity) => user?.roles.find((role: RoleEntity) => role.id === ROLE_SELLER);
 
+// eslint-disable-next-line max-len
 export const isAdmin = (user: UserEntity) => user?.roles.find((role: RoleEntity) => role.id === ROLE_ADMIN);
 
 // eslint-disable-next-line max-len

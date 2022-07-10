@@ -12,7 +12,6 @@ import axios from 'lib/axios';
 import Card from 'components/Card';
 import BeneficiarySearchForm from 'components/BeneficiarySearchForm';
 import { formatDate } from 'lib/datetime';
-import { useAuth } from 'hooks/auth';
 import { AxiosResponse } from 'axios';
 
 const BeneficiaryRow = ({ beneficiary }: { beneficiary: BeneficiaryMapped }) => (
@@ -128,7 +127,6 @@ const Dashboard = () => {
   const [totalContractors, setTotalContractors] = useState<string>();
   const [meta, setMeta] = useState<Meta>();
   const containerResultRef = useRef<HTMLDivElement>(null);
-  const { user } = useAuth({ middleware: 'auth' });
 
   const scrollBarAfterFiltering = (): void => {
     if (containerResultRef) {
@@ -140,7 +138,10 @@ const Dashboard = () => {
 
   const handleResultPagination = async (res: AxiosResponse<any>) => {
     setPage(page + 1);
-    setItems([...items, ...(res.data.data).map((beneficiary: BeneficiaryEntity) => beneficiaryMapper(beneficiary))]);
+    setItems([
+      ...items,
+      ...(res.data.data).map((beneficiary: BeneficiaryEntity) => beneficiaryMapper(beneficiary)),
+    ]);
     setMeta(res?.data.meta);
     setHasMore(res?.data.meta.current_page < res?.data.meta.last_page);
     const totalizersData = await axios.get('/api/searches/totalizers');
