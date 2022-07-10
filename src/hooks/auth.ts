@@ -3,7 +3,7 @@ import axios from 'lib/axios';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useLocalStorage } from 'hooks/local-storage';
-import { isCommercialAssistant, isSeller } from 'lib/profile';
+import { isAdmin } from 'lib/profile';
 
 function handleErrors(setErrors: (value: any) => void) {
   return (e: any) => {
@@ -30,10 +30,7 @@ export const useAuth = ({
     .get('/api/whoami')
     .then(async (res) => {
       const { data: userLoaded } = res.data;
-      if (isSeller(userLoaded) && ['/admin/sellers', '/admin/suppliers'].includes(router.pathname)) {
-        await router.push('/404');
-      }
-      if (isCommercialAssistant(userLoaded) && ['/admin/sellers'].includes(router.pathname)) {
+      if (!isAdmin(userLoaded) && ['/admin/beneficiaries', '/admin/users'].includes(router.pathname)) {
         await router.push('/404');
       }
       return userLoaded;
@@ -46,7 +43,13 @@ export const useAuth = ({
   const register = async ({
     setErrors,
     ...props
-  }: { setErrors: (value: any) => void, name: string, email: string, password: string, passworConfirmation: string }) => {
+  }: {
+      setErrors: (value: any) => void,
+      name: string,
+      email: string,
+      password: string,
+      passworConfirmation: string
+  }) => {
     setErrors([]);
 
     axios

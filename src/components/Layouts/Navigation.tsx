@@ -46,9 +46,17 @@ const Navigation = ({ user }: any) => {
                 Usuários
               </NavLink>
               )}
+              {profile === ADMIN && (
+              <NavLink
+                href="/admin/beneficiaries"
+                active={router.pathname === '/admin/beneficiaries'}
+              >
+                Beneficiários
+              </NavLink>
+              )}
               <NavLink
                 href="/admin/procedures"
-                active={router.pathname === '/admin/customers'}
+                active={router.pathname === '/admin/procedures'}
               >
                 Prestadores
               </NavLink>
@@ -140,9 +148,25 @@ const Navigation = ({ user }: any) => {
             >
               Dashboard
             </ResponsiveNavLink>
+            {profile === ADMIN && (
             <ResponsiveNavLink
-              href="/admin/sellers"
-              active={router.pathname === '/admin/sellers'}
+              href="/admin/users"
+              active={router.pathname === '/admin/users'}
+            >
+              Utilizadores
+            </ResponsiveNavLink>
+            )}
+            {profile === ADMIN && (
+            <ResponsiveNavLink
+              href="/admin/beneficiaries"
+              active={router.pathname === '/admin/beneficiaries'}
+            >
+              Beneficiarios
+            </ResponsiveNavLink>
+            )}
+            <ResponsiveNavLink
+              href="/admin/procedures"
+              active={router.pathname === '/admin/procedures'}
             >
               Utilizadores
             </ResponsiveNavLink>

@@ -1,5 +1,5 @@
-import { convertIntegerInFloatValue } from 'lib/masks'
-import { formatDateTime } from 'lib/datetime'
+import { convertIntegerInFloatValue } from 'lib/masks';
+import { formatDateTime } from 'lib/datetime';
 
 export interface Pagination<T> {
     data: Partial<T>
@@ -354,6 +354,36 @@ export interface PersonalDetailEntity {
     created_at: string
 }
 
+export interface PersonalDetailMapped {
+    id: string
+    name: string
+    birthday: string
+    cpf: string
+    rg: string
+    ssp: any
+    email: string
+    address: string
+    zipCode: string
+    neighborhood: string
+    complement: any
+    number: string
+    lat: string
+    lng: string
+    cityId: number
+    city: CityOption
+    phoneNumber: string
+    mobileNumber: string
+    businessNumber: string
+    website: string
+    nationality: string
+    naturalness: string
+    profession: string
+    civilState: CivilStateOption
+    gender: GenderOption
+    type: string
+    createdAt: string
+}
+
 export interface CityOption {
     label: string
     value: number
@@ -501,35 +531,33 @@ export type SellerMapped = {
 
 export const tariffMapper = (tariff?: TariffEntity): TariffMapped | undefined => {
   if (!tariff) {
-    return undefined
+    return undefined;
   }
 
   return {
     id: tariff.id,
     name: tariff.name,
     createdAt: formatDateTime(tariff.created_at),
-    updatedAt: formatDateTime(tariff.updated_at)
-  } as TariffMapped
-}
+    updatedAt: formatDateTime(tariff.updated_at),
+  } as TariffMapped;
+};
 
 export const rolesMapper = (roles?: RoleEntity[]): RoleMapped[] | [] => {
   if (!roles) {
-    return []
+    return [];
   }
-  return roles.map((role) => {
-    return {
-      createdAt: formatDateTime(role.created_at),
-      deletedAt: formatDateTime(role.deleted_at),
-      id: role.id,
-      name: role.name,
-      updatedAt: formatDateTime(role.updated_at)
-    }
-  }) as RoleMapped[]
-}
+  return roles.map((role) => ({
+    createdAt: formatDateTime(role.created_at),
+    deletedAt: formatDateTime(role.deleted_at),
+    id: role.id,
+    name: role.name,
+    updatedAt: formatDateTime(role.updated_at),
+  })) as RoleMapped[];
+};
 
 export const addressMapper = (address?: AddressEntity): AddressMapped | undefined => {
   if (!address) {
-    return undefined
+    return undefined;
   }
 
   return {
@@ -543,13 +571,13 @@ export const addressMapper = (address?: AddressEntity): AddressMapped | undefine
     number: address.number,
     postalCode: address.postal_code,
     street: address.street,
-    register: address.register
-  } as AddressMapped
-}
+    register: address.register,
+  } as AddressMapped;
+};
 
 export const userMapper = (user: UserEntity): UserMapped | undefined => {
   if (!user) {
-    return undefined
+    return undefined;
   }
 
   return {
@@ -561,13 +589,51 @@ export const userMapper = (user: UserEntity): UserMapped | undefined => {
     lgpdVerified: user.lgpd_verified,
     id: user.id,
     roles: rolesMapper(user.roles),
-    updatedAt: formatDateTime(user.updated_at)
-  } as UserMapped
+    updatedAt: formatDateTime(user.updated_at),
+  } as UserMapped;
+};
+
+export interface ContractEntity {
+    id: string
+    name: string
+    effective_date: string
+    health_plan_cost: number
+    status_id: string
+    created_at: string
+    updated_at: string
+    deleted_at: any
+    contract_number: any
+    contract_url: any
+    health_plan_cost_formatted: string
+    health_plan_cost_total_formatted: string
+    contractor_id: string
+    already_assigned: boolean
+    status_name: string
+    status_color: string
+}
+
+export interface ContractMapped {
+    id: string
+    name: string
+    effectiveDate: string
+    healthPlanCost: number
+    statusId: string
+    createdAt: string
+    updatedAt: string
+    deletedAt: any
+    contractNumber: any
+    contractUrl: any
+    healthPlanCostFormatted: string
+    healthPlanCostTotalFormatted: string
+    contractorId: string
+    alreadyAssigned: boolean
+    statusName: string
+    status_color: string
 }
 
 export const providerMapper = (provider: ProviderEntity): ProviderMapped | undefined => {
   if (!provider) {
-    return undefined
+    return undefined;
   }
 
   return {
@@ -600,13 +666,13 @@ export const providerMapper = (provider: ProviderEntity): ProviderMapped | undef
     address: provider.address,
     bank: provider.bank,
     serviceTypes: provider.serviceTypes,
-    assistanceTypes: provider.assistanceTypes
-  } as ProviderMapped
-}
+    assistanceTypes: provider.assistanceTypes,
+  } as ProviderMapped;
+};
 
 export const visitMapper = (visit: VisitEntity): VisitMapped | undefined => {
   if (!visit) {
-    return undefined
+    return undefined;
   }
 
   return {
@@ -616,13 +682,13 @@ export const visitMapper = (visit: VisitEntity): VisitMapped | undefined => {
     observation: visit.observation,
     createdAt: visit.created_at,
     updatedAt: visit.updated_at,
-    deletedAt: visit.deleted_at
-  } as VisitMapped
-}
+    deletedAt: visit.deleted_at,
+  } as VisitMapped;
+};
 
 export const sellerMapper = (seller?: SellerEntity): SellerMapped | undefined => {
   if (!seller) {
-    return undefined
+    return undefined;
   }
 
   return {
@@ -637,27 +703,25 @@ export const sellerMapper = (seller?: SellerEntity): SellerMapped | undefined =>
     updatedAt: formatDateTime(seller.updated_at),
     user: userMapper(seller.user),
     userId: seller.user_id,
-    inactivate: !!seller.deleted_at
-  } as SellerMapped
-}
+    inactivate: !!seller.deleted_at,
+  } as SellerMapped;
+};
 
 export const contactsMapper = (contacts?: ContactEntity[]): ContactMapped[] | [] => {
   if (!contacts) {
-    return []
+    return [];
   }
-  return contacts.map((contact) => {
-    return {
-      id: contact.id,
-      phone: contact.phone,
-      email: contact.email,
-      emailType: contact.email_type
-    }
-  }) as ContactMapped[]
-}
+  return contacts.map((contact) => ({
+    id: contact.id,
+    phone: contact.phone,
+    email: contact.email,
+    emailType: contact.email_type,
+  })) as ContactMapped[];
+};
 
 export const supplierMapper = (supplier?: SupplierEntity): SupplierMapped | undefined => {
   if (!supplier) {
-    return undefined
+    return undefined;
   }
 
   return {
@@ -669,13 +733,13 @@ export const supplierMapper = (supplier?: SupplierEntity): SupplierMapped | unde
     createdAt: formatDateTime(supplier.created_at),
     deletedAt: formatDateTime(supplier.deleted_at),
     document: supplier.document,
-    id: supplier.id
-  } as SupplierMapped
-}
+    id: supplier.id,
+  } as SupplierMapped;
+};
 
 export const supplierCustomerMapper = (supplierCustomer: SupplierCustomerEntity): SupplierCustomerMapped | undefined => {
   if (!supplierCustomer) {
-    return undefined
+    return undefined;
   }
 
   return {
@@ -684,28 +748,26 @@ export const supplierCustomerMapper = (supplierCustomer: SupplierCustomerEntity)
     code: supplierCustomer.code,
     createdAt: supplierCustomer.created_at,
     updatedAt: supplierCustomer.updated_at,
-    supplier: supplierMapper(supplierCustomer.supplier)
-  } as SupplierCustomerMapped
-}
+    supplier: supplierMapper(supplierCustomer.supplier),
+  } as SupplierCustomerMapped;
+};
 
-export const customerBranchMapper = (customerBranch: CustomerBranchEntity): CustomerBranchMapped => {
-  return {
-    id: customerBranch.id,
-    activitySectorId: customerBranch.activity_sector_id,
-    tariffId: customerBranch.tariff_id,
-    address: addressMapper(customerBranch.address),
-    // // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    customerName: customerBranch.customer_name,
-    contacts: contactsMapper(customerBranch.contacts),
-    customerId: customerBranch.customer_id,
-    taxAddress: customerBranch.tax_address,
-    sellers: customerBranch.sellers?.map((seller) => sellerMapper(seller))
-  } as CustomerBranchMapped
-}
+export const customerBranchMapper = (customerBranch: CustomerBranchEntity): CustomerBranchMapped => ({
+  id: customerBranch.id,
+  activitySectorId: customerBranch.activity_sector_id,
+  tariffId: customerBranch.tariff_id,
+  address: addressMapper(customerBranch.address),
+  // // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  customerName: customerBranch.customer_name,
+  contacts: contactsMapper(customerBranch.contacts),
+  customerId: customerBranch.customer_id,
+  taxAddress: customerBranch.tax_address,
+  sellers: customerBranch.sellers?.map((seller) => sellerMapper(seller)),
+} as CustomerBranchMapped);
 
 export const customerMapper = (customer?: CustomerEntity): CustomerMapped | undefined => {
   if (!customer) {
-    return undefined
+    return undefined;
   }
 
   return {
@@ -722,13 +784,13 @@ export const customerMapper = (customer?: CustomerEntity): CustomerMapped | unde
     suppliers: customer.suppliers?.map((supplier) => supplierMapper(supplier)),
     createdAt: formatDateTime(customer.created_at),
     updatedAt: formatDateTime(customer.updated_at),
-    deletedAt: formatDateTime(customer.deleted_at)
-  } as CustomerMapped
-}
+    deletedAt: formatDateTime(customer.deleted_at),
+  } as CustomerMapped;
+};
 
 export const procedureMapper = (procedure?: ProcedureEntity): ProcedureMapped | undefined => {
   if (!procedure) {
-    return undefined
+    return undefined;
   }
 
   return {
@@ -744,71 +806,244 @@ export const procedureMapper = (procedure?: ProcedureEntity): ProcedureMapped | 
     city: procedure.city,
     state: procedure.state,
     initials: procedure.initials,
-    total: procedure.total
-  } as ProcedureMapped
-}
+    total: procedure.total,
+  } as ProcedureMapped;
+};
 
 export const customerBranchesMapper = (customerBranches?: CustomerBranchEntity[]): CustomerBranchMapped[] | [] => {
   if (!customerBranches) {
-    return []
+    return [];
   }
-  return customerBranches.map((customerBranch) => customerBranchMapper(customerBranch))
-}
+  return customerBranches.map((customerBranch) => customerBranchMapper(customerBranch));
+};
 
-const snakingCase = (s: string) => {
-  return s.split(/(?=[A-Z])/).join('_').toLowerCase()
-}
+const snakingCase = (s: string) => s.split(/(?=[A-Z])/).join('_').toLowerCase();
 
 export const revertMapping = (payload: any): any => {
   if (typeof payload !== 'object') {
-    return payload
+    return payload;
   }
   for (const k in payload) {
     if (typeof payload[k] === 'object') {
-      payload[k] = revertMapping(payload[k])
+      payload[k] = revertMapping(payload[k]);
     }
-    const newK = snakingCase(k)
-    payload[newK] = payload[k]
+    const newK = snakingCase(k);
+    payload[newK] = payload[k];
     if (newK !== k) {
-      delete payload[k]
+      delete payload[k];
     }
   }
 
-  return payload
-}
+  return payload;
+};
 
 export const emailContentDefaultValue = `
 <p>Buenas tardes, </p><p><br></p><p>Adjunto cheque del cliente:</p><p><br></p><p><br></p><p>Saludos</p>
-`
+`;
 
 export const emailSubjectDefaultValue = `
 'Comunicación de cobro'
-`
+`;
 
-export const saleMapper = (sale: SaleEntity): SaleMapped => {
-  return {
-    id: sale.id,
-    saleValue: convertIntegerInFloatValue(sale.sale_value),
-    soldAt: sale.sold_at,
-    invoice: sale.invoice,
-    invoiceType: sale.invoice_type,
-    invoiceDate: sale.invoice_date,
-    expiresIn: sale.expires_in,
-    paidAt: sale.paid_at,
-    latePaymentMotive: sale.late_payment_motive,
-    checkAttachId: sale.check_attach_id,
-    checkImageDescription: sale.check_image_description,
-    invoicedAmount: convertIntegerInFloatValue(sale.invoiced_amount),
-    supplierId: sale.supplier_id,
-    customerBranchId: sale.customer_branch_id,
-    sellerId: sale.seller_id,
-    userId: sale.user_id,
-    createdAt: formatDateTime(sale.created_at),
-    updatedAt: formatDateTime(sale.updated_at),
-    deletedAt: formatDateTime(sale.deleted_at),
-    customerBranch: sale.customer_branch.id ? customerBranchMapper(sale.customer_branch) : null,
-    supplier: supplierMapper(sale.supplier),
-    seller: sellerMapper(sale.seller),
-    visits: sale.visits?.map((visit: VisitEntity) => visitMapper(visit))
-  } as SaleMapped
+export const saleMapper = (sale: SaleEntity): SaleMapped => ({
+  id: sale.id,
+  saleValue: convertIntegerInFloatValue(sale.sale_value),
+  soldAt: sale.sold_at,
+  invoice: sale.invoice,
+  invoiceType: sale.invoice_type,
+  invoiceDate: sale.invoice_date,
+  expiresIn: sale.expires_in,
+  paidAt: sale.paid_at,
+  latePaymentMotive: sale.late_payment_motive,
+  checkAttachId: sale.check_attach_id,
+  checkImageDescription: sale.check_image_description,
+  invoicedAmount: convertIntegerInFloatValue(sale.invoiced_amount),
+  supplierId: sale.supplier_id,
+  customerBranchId: sale.customer_branch_id,
+  sellerId: sale.seller_id,
+  userId: sale.user_id,
+  createdAt: formatDateTime(sale.created_at),
+  updatedAt: formatDateTime(sale.updated_at),
+  deletedAt: formatDateTime(sale.deleted_at),
+  customerBranch: sale.customer_branch.id ? customerBranchMapper(sale.customer_branch) : null,
+  supplier: supplierMapper(sale.supplier),
+  seller: sellerMapper(sale.seller),
+  visits: sale.visits?.map((visit: VisitEntity) => visitMapper(visit)),
+} as SaleMapped);
+
+export const personalDetailMapper = (personalDetail: PersonalDetailEntity): PersonalDetailMapped => ({
+  id: personalDetail.id,
+  name: personalDetail.name,
+  birthday: personalDetail.birthday,
+  cpf: personalDetail.cpf,
+  rg: personalDetail.rg,
+  ssp: personalDetail.ssp,
+  email: personalDetail.email,
+  address: personalDetail.address,
+  zipCode: personalDetail.zip_code,
+  neighborhood: personalDetail.neighborhood,
+  complement: personalDetail.complement,
+  number: personalDetail.number,
+  lat: personalDetail.lat,
+  lng: personalDetail.lng,
+  cityId: personalDetail.city_id,
+  city: personalDetail.city,
+  phoneNumber: personalDetail.phone_number,
+  mobileNumber: personalDetail.mobile_number,
+  businessNumber: personalDetail.business_number,
+  website: personalDetail.website,
+  nationality: personalDetail.nationality,
+  naturalness: personalDetail.naturalness,
+  profession: personalDetail.profession,
+  civilState: personalDetail.civilState,
+  gender: personalDetail.gender,
+  type: personalDetail.type,
+  createdAt: personalDetail.created_at,
+} as PersonalDetailMapped);
+
+export const beneficiaryMapper = (beneficiary: BeneficiaryEntity): BeneficiaryMapped => ({
+  id: beneficiary.id,
+  personalDetailId: beneficiary.personal_detail_id,
+  beneficiaryId: beneficiary.beneficiary_id,
+  mothersName: beneficiary.mothers_name,
+  beneficiaryNumber: beneficiary.beneficiary_number,
+  bloodType: beneficiary.blood_type,
+  contractorId: beneficiary.contractor_id,
+  createdAt: beneficiary.created_at,
+  statusId: beneficiary.status_id,
+  statusName: beneficiary.status_name,
+  statusColor: beneficiary.status_color,
+  notes: beneficiary.notes,
+  personalDetail: personalDetailMapper(beneficiary.personalDetail),
+  dependents: beneficiary.dependents,
+  degreeOfKinship: beneficiary.degreeOfKinship,
+  beneficiaryAttachment: beneficiary.beneficiaryAttachment,
+  lgpdAssigned: beneficiary.lgpd_assigned,
+  lgpdAssignedAt: beneficiary.lgpd_assigned_at,
+} as BeneficiaryMapped);
+
+export interface DegreeOfKinshipOption {
+    value: string
+    label: string
+}
+
+export interface BeneficiaryEntity {
+    id: string
+    personal_detail_id: string
+    beneficiary_id: any
+    mothers_name: string
+    beneficiary_number: string
+    degree_of_kinship: string
+    blood_type: string
+    contractor_id: string
+    created_at: string
+    lgpd_assigned_at: string
+    status_id: string
+    status_name: string
+    status_color: string
+    notes: any[]
+    personalDetail: PersonalDetailEntity
+    dependents: number
+    degreeOfKinship: DegreeOfKinshipOption
+    beneficiaryAttachment: any
+    lgpd_assigned: boolean
+}
+
+export interface BeneficiaryMapped {
+    id: string
+    personalDetailId: string
+    beneficiaryId: any
+    mothersName: string
+    beneficiaryNumber: string
+    bloodType: string
+    contractorId: string
+    lgpdAssignedAt: string
+    createdAt: string
+    statusId: string
+    statusName: string
+    statusColor: string
+    notes: any[]
+    personalDetail: PersonalDetailMapped
+    dependents: number
+    degreeOfKinship: DegreeOfKinshipOption
+    beneficiaryAttachment: any
+    lgpdAssigned: boolean
+}
+
+export interface ContractorEntity {
+    id: string
+    social_name: string
+    fantasy_name: string
+    cnpj: string
+    cpf: string
+    state_number: string
+    municipality_number: string
+    personal_detail_id: string
+    contractor_type: string
+    user_id: string
+    status_id: string
+    status_name: string
+    status_color: string
+    created_at: string
+    personalDetail: PersonalDetailEntity
+    beneficiaries: number
+    health_plan_cost_formatted: string
+    health_plan_cost_total_formatted: string
+    contractorAttachment: any
+    billing_address_id: string
+    company_address_id: any
+    billingAddress: BillingAddressEntity
+    companyAddress: any
+}
+
+export interface ContractorMapped {
+    id: string
+    socialName: string
+    fantasyName: string
+    cnpj: string
+    cpf: string
+    stateNumber: string
+    municipalityNumber: string
+    personalDetailId: string
+    contractorType: string
+    userId: string
+    statusId: string
+    statusName: string
+    statusColor: string
+    createdAt: string
+    personalDetail: PersonalDetailMapped
+    beneficiaries: number
+    healthPlanCostFormatted: string
+    healthPlanCostTotalFormatted: string
+    contractorAttachment: any
+    billingAddressId: string
+    companyAddressId: any
+    billingAddress: BillingAddressMapped
+    companyAddress: any
+}
+
+export interface BillingAddressEntity {
+    id: string
+    country: string
+    street: string
+    street_number: string
+    neighborhood: string
+    complementary: string
+    zip_code: string
+    type: string
+    city_id: number
+    city: CityOption
+}
+
+export interface BillingAddressMapped {
+    id: string
+    country: string
+    street: string
+    streetNumber: string
+    neighborhood: string
+    complementary: string
+    zipCode: string
+    type: string
+    cityId: number
+    city: CityOption
 }
