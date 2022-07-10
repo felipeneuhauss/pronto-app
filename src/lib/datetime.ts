@@ -8,7 +8,7 @@ export const formatDateTime = (date?: string) => {
   return null;
 };
 
-export const formatDate = (date?: string) => {
+export const formatDate = (date?: string | null) => {
   if (date) {
     return format(new Date(date), 'dd/MM/yyyy');
   }

@@ -913,6 +913,7 @@ export const beneficiaryMapper = (beneficiary: BeneficiaryEntity): BeneficiaryMa
   statusId: beneficiary.status_id,
   statusName: beneficiary.status_name,
   statusColor: beneficiary.status_color,
+  contractAssignedAt: beneficiary.contract_assigned_at,
   notes: beneficiary.notes,
   personalDetail: personalDetailMapper(beneficiary.personalDetail),
   dependents: beneficiary.dependents,
@@ -941,6 +942,7 @@ export interface BeneficiaryEntity {
     status_id: string
     status_name: string
     status_color: string
+    contract_assigned_at: string | null;
     notes: any[]
     personalDetail: PersonalDetailEntity
     dependents: number
@@ -957,6 +959,7 @@ export interface BeneficiaryMapped {
     beneficiaryNumber: string
     bloodType: string
     contractorId: string
+    contractAssignedAt: string | null;
     lgpdAssignedAt: string
     createdAt: string
     statusId: string

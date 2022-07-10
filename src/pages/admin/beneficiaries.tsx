@@ -102,7 +102,7 @@ const BeneficiaryRow = ({ beneficiary }: { beneficiary: BeneficiaryMapped }) => 
         <div>
           <div className="flex-col">
             <span className="text-xs font-bold inline-block w-full">Data de assinatura</span>
-            {formatDate(beneficiary.lgpdAssignedAt)}
+            {beneficiary.contractAssignedAt ? formatDate(beneficiary.contractAssignedAt) : '-'}
           </div>
         </div>
       </div>
